@@ -8,5 +8,5 @@ unable to close w/o task manager or rebooting
 
 
 # Planned updates!
-Box showing what kinito is saying!
-Integration with ChatGPT
+* Box showing what kinito is saying!
+* Integration with ChatGPT
