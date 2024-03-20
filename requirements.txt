@@ -1,3 +1,4 @@
+Requirements:
 pillow
 pygame
 pystray
