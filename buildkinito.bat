@@ -1,5 +1,5 @@
 @echo OFF
-title sigma
+title KinitoPet Desktop Pet builder
 echo Please continue to build kinito!
 pause;
 echo Building Kinito
