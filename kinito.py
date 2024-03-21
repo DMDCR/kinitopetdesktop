@@ -41,7 +41,7 @@ class DesktopPet(tk.Tk):
         pygame.mixer.music.play()
         
         # Load the GIFs for your best friend
-        self.gifs_directory = "gifs/"
+        self.gifs_directory = "models/"
         self.pet_images = {}
         for filename in os.listdir(self.gifs_directory):
             if filename.endswith('.gif'):
