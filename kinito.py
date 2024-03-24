@@ -2,6 +2,8 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import os
 import random
+import requests
+import tempfile
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame 
 import sys
@@ -56,6 +58,12 @@ class DesktopPet(tk.Tk):
         self.moving = True
         self.move_pet()
         self.update_animation()
+        
+        # Check internet connectivity
+        if not self.check_internet():
+            self.play_failed_internet_audio()
+            time.sleep(5)  # Delay to ensure the audio starts playing
+            self.destroy()
 
     def load_gif(self, path):
         gif = Image.open(path)
@@ -126,13 +134,57 @@ class DesktopPet(tk.Tk):
         self.move_pet()
 
     def play_random_audio(self):
-        audio_directory = "audio/"
-        audio_files = [os.path.join(audio_directory, f) for f in os.listdir(audio_directory) if f.endswith('.wav')]
+        audio_files = self.fetch_github_audio_files()  # Fetch audio files from GitHub
         if audio_files:
             pygame.mixer.init()
             random_audio_file = random.choice(audio_files)
             pygame.mixer.music.load(random_audio_file)
             pygame.mixer.music.play()
+        else:
+            self.play_failed_internet_audio()
+
+    def play_failed_internet_audio(self):
+        audio_file_path = os.path.join("other", "failedinternet.wav")
+        if os.path.exists(audio_file_path):
+            pygame.mixer.init()
+            pygame.mixer.music.load(audio_file_path)
+            pygame.mixer.music.play()
+            # Calculate the duration of the audio file
+            audio = pygame.mixer.Sound(audio_file_path)
+            duration = audio.get_length()
+            # After the audio finishes playing, close the application
+            self.after(int(duration * 1600), self.destroy)
+
+    def check_internet(self):
+        try:
+            requests.get("https://dmdtutorials.com", timeout=5)
+            return True
+        except requests.ConnectionError:
+            return False
+
+    def fetch_github_audio_files(self):
+        # GitHub repository URL and directory containing audio files
+        repo_url = "https://raw.githubusercontent.com/DMDCR/kinitopetdesktop/main/"
+        audio_directory = "audio/"
+        kinitoread_file = "audio.kinitoread"
+        url = repo_url + audio_directory + kinitoread_file
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an exception for invalid response
+            audio_files = response.text.split(",")  # Split filenames by comma
+            audio_files = [audio.strip() for audio in audio_files]  # Remove leading/trailing whitespace
+            audio_files = [os.path.join(audio_directory, audio) for audio in audio_files]  # Construct full paths
+            return audio_files
+
+        except requests.RequestException as e:
+            print("Error fetching audio files:", e)
+            self.play_failed_internet_audio()
+            return []
+
+        except Exception as e:
+            print("Unexpected error:", e)
+            return []
 
 if __name__ == "__main__":
     app = DesktopPet()
