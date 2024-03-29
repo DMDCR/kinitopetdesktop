@@ -3,8 +3,10 @@ This project will evolve slowly, expect updates!
 
 ### ONLY WORKS ON WINDOWS 10/11!
 
-# Known Issues
-unable to close w/o task manager or rebooting
+# Known Issues in latest Pre-release/Beta version
+* Kinito not talking, at all.
+* Directly accessing websites (Surf the web) menu broken
+* Kinito talks at wrong times (like when you close the right click menu)
 
 
 # Planned updates!
