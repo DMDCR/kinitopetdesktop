@@ -1,56 +1,102 @@
 import tkinter as tk
+from tkinter import Menu, simpledialog, messagebox
 from PIL import Image, ImageTk
 import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import random
 import requests
-import tempfile
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame 
-import sys
-import time
+import pygame
+import threading
 import pystray
 from pystray import MenuItem as item
-import threading
+import webbrowser
 
-# Made by DMDCR / @dmdev_ on yt
+class IconDialog:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.geometry("300x100")
+        self.root.title("Surf Web")
+        self.root.iconbitmap(default="icon.ico")
+        self.url_entry = tk.Entry(self.root, width=40)
+        self.url_entry.pack(pady=10)
+        self.url_entry.focus_set()
+        self.open_button = tk.Button(self.root, text="Search", command=self.open_url)
+        self.open_button.pack()
+        self.root.mainloop()
+
+    def open_url(self):
+        url = self.url_entry.get()
+        if url:
+            webbrowser.open(url)
+            self.root.destroy()
+        else:
+            messagebox.showwarning("Empty URL", "Please enter a URL.")
 
 class DesktopPet(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.overrideredirect(True)  # Removes window decorations
-        self.attributes('-topmost', True)  # Keep the window on top
-        self.wm_attributes('-transparentcolor', 'white')  # Make white transparent
-        self.should_stop = threading.Event()  # Event to signal when to stop the tray icon thread
-        self.setup_tray_icon()  # Setup tray icon when the object is initialized
+        self.overrideredirect(True)
+        self.attributes('-topmost', True)
+        self.wm_attributes('-transparentcolor', 'white')
+        self.should_stop = threading.Event()
+        self.setup_tray_icon()
+        self.setup_menu()
+        self.setup_pet()
+        self.bind("<Button-3>", self.show_menu)
+        self.say_hello()
 
-    # Function to be called when the menu item is clicked
-    def exit_action(self, icon, item):
-        print('This feature is not implemented yet!')
+    def exit_action(self):
+        self.destroy()
 
-    # Function to create and run the tray icon
+    def surf_web(self):
+        IconDialog()
+
+    def play_audio(self, audio_path):
+        if os.path.exists(audio_path):
+            pygame.mixer.init()
+            pygame.mixer.music.load(audio_path)
+            pygame.mixer.music.play()
+
     def setup_tray_icon(self):
-        image = Image.open(os.path.join("other", "icon.png"))  # Path to icon.png within the "other" directory
-        menu = (pystray.MenuItem('Please use Task Manager to close Kinito', self.exit_action),)
+        image = Image.open(os.path.join("other", "icon.png"))
+        menu = (item('Exit', self.exit_action),)
         self.icon = pystray.Icon("name", image, "KinitoPet Desktop Pet", menu)
-        # Run the tray icon in a separate thread
         self.tray_thread = threading.Thread(target=self.icon.run)
-        self.tray_thread.daemon = True  # Daemonize the thread so it automatically closes when the main thread ends
+        self.tray_thread.daemon = True
         self.tray_thread.start()
-        
-        # make him say hi on start!
-        pygame.mixer.init()
-        pygame.mixer.music.load(os.path.join("other", "hello.mp3"))  # Path to hello.mp3 within the "other" directory
-        pygame.mixer.music.play()
-        
-        # Load the GIFs for your best friend
-        self.gifs_directory = "models/"
+
+    def show_menu(self, event):
+        self.menu.post(event.x_root, event.y_root)
+
+    def setup_menu(self):
+        self.menu = Menu(self, tearoff=0)
+        url_menu = Menu(self.menu, tearoff=0)
+        url_menu.add_command(label="Surf the web! (Open a website)", command=self.surf_web)
+        url_menu.add_command(label="Search Google", command=self.search_google)
+        url_menu.add_command(label="Search Wikipedia", command=self.search_wikipedia)
+        self.menu.add_cascade(label="Search", menu=url_menu)
+        self.menu.add_separator()
+        self.menu.add_command(label="Exit", command=self.exit_action)
+
+    def search_google(self):
+        self.play_audio(os.path.join("other", "search_web.wav"))
+        query = simpledialog.askstring("Google Search", "Enter your Google search query:")
+        if query:
+            webbrowser.open("https://www.google.com/search?q=" + query)
+
+    def search_wikipedia(self):
+        self.play_audio(os.path.join("other", "search_web.wav"))
+        query = simpledialog.askstring("Wikipedia Search", "Enter your Wikipedia search query:")
+        if query:
+            webbrowser.open("https://en.wikipedia.org/wiki/" + query.replace(" ", "_"))
+
+    def setup_pet(self):
         self.pet_images = {}
-        for filename in os.listdir(self.gifs_directory):
+        for filename in os.listdir("models/"):
             if filename.endswith('.gif'):
                 pet_name = os.path.splitext(filename)[0]
-                self.pet_images[pet_name] = self.load_gif(os.path.join(self.gifs_directory, filename))
+                self.pet_images[pet_name] = self.load_gif(os.path.join("models/", filename))
 
-        # Display your best friend
         self.pet_sprite = tk.Label(self, anchor=tk.CENTER, bg='white')
         self.pet_sprite.pack()
         self.animation_index = 0
@@ -58,12 +104,6 @@ class DesktopPet(tk.Tk):
         self.moving = True
         self.move_pet()
         self.update_animation()
-        
-        # Check internet connectivity
-        if not self.check_internet():
-            self.play_failed_internet_audio()
-            time.sleep(5)  # Delay to ensure the audio starts playing
-            self.destroy()
 
     def load_gif(self, path):
         gif = Image.open(path)
@@ -71,9 +111,9 @@ class DesktopPet(tk.Tk):
         try:
             while True:
                 frames.append(ImageTk.PhotoImage(gif.copy()))
-                gif.seek(len(frames))  # Move to next frame
+                gif.seek(len(frames))
         except EOFError:
-            pass  # End of frames
+            pass
         return frames
 
     def update_animation(self):
@@ -82,8 +122,8 @@ class DesktopPet(tk.Tk):
                 self.pet_sprite.config(image=self.pet_images[self.direction][self.animation_index])
                 self.animation_index = (self.animation_index + 1) % len(self.pet_images[self.direction])
         else:
-            self.pet_sprite.config(image=self.pet_images['normal'][0])  # Show normal image
-        self.after(120, self.update_animation)  # Maintain frames per second
+            self.pet_sprite.config(image=self.pet_images['normal'][0])
+        self.after(120, self.update_animation)
 
     def move_pet(self):
         screen_width = self.winfo_screenwidth()
@@ -119,8 +159,9 @@ class DesktopPet(tk.Tk):
     def glide_to(self, target_x, target_y, current_x, current_y, step_x, step_y):
         if (round(current_x), round(current_y)) == (target_x, target_y):
             self.moving = False
-            self.play_random_audio()  # Play random audio file when pet stops
-            self.after(random.randint(3000, 4000), self.random_move)  # Random stop time between 3-4 seconds
+            audio_path = random.choice(self.fetch_github_audio_files())
+            self.play_audio(audio_path)
+            self.after(random.randint(3000, 4000), self.random_move)
             return
 
         current_x += step_x
@@ -133,37 +174,11 @@ class DesktopPet(tk.Tk):
         self.moving = True
         self.move_pet()
 
-    def play_random_audio(self):
-        audio_files = self.fetch_github_audio_files()  # Fetch audio files from GitHub
-        if audio_files:
-            pygame.mixer.init()
-            random_audio_file = random.choice(audio_files)
-            pygame.mixer.music.load(random_audio_file)
-            pygame.mixer.music.play()
-        else:
-            self.play_failed_internet_audio()
-
-    def play_failed_internet_audio(self):
-        audio_file_path = os.path.join("other", "failedinternet.wav")
-        if os.path.exists(audio_file_path):
-            pygame.mixer.init()
-            pygame.mixer.music.load(audio_file_path)
-            pygame.mixer.music.play()
-            # Calculate the duration of the audio file
-            audio = pygame.mixer.Sound(audio_file_path)
-            duration = audio.get_length()
-            # After the audio finishes playing, close the application
-            self.after(int(duration * 1600), self.destroy)
-
-    def check_internet(self):
-        try:
-            requests.get("https://dmdtutorials.com", timeout=5)
-            return True
-        except requests.ConnectionError:
-            return False
+    def say_hello(self):
+        audio_url = "other/hello.mp3"
+        self.play_audio(audio_url)
 
     def fetch_github_audio_files(self):
-        # GitHub repository URL and directory containing audio files
         repo_url = "https://raw.githubusercontent.com/DMDCR/kinitopetdesktop/main/"
         audio_directory = "audio/"
         kinitoread_file = "audio.kinitoread"
@@ -171,15 +186,14 @@ class DesktopPet(tk.Tk):
 
         try:
             response = requests.get(url)
-            response.raise_for_status()  # Raise an exception for invalid response
-            audio_files = response.text.split(",")  # Split filenames by comma
-            audio_files = [audio.strip() for audio in audio_files]  # Remove leading/trailing whitespace
-            audio_files = [os.path.join(audio_directory, audio) for audio in audio_files]  # Construct full paths
+            response.raise_for_status()
+            audio_files = response.text.split(",")  
+            audio_files = [audio.strip() for audio in audio_files]  
+            audio_files = [os.path.join(audio_directory, audio) for audio in audio_files]  
             return audio_files
 
         except requests.RequestException as e:
             print("Error fetching audio files:", e)
-            self.play_failed_internet_audio()
             return []
 
         except Exception as e:
