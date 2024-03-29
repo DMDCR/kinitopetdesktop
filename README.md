@@ -10,4 +10,4 @@ unable to close w/o task manager or rebooting
 # Planned updates!
 * Box showing what Kinito is saying!
 * Integration with ChatGPT
-* ~~Closing using tray (hidden icons tray)~~ ✔ Completed! *(currently in beta release!)*
+* ~~Closing using tray (hidden icons tray)~~ ✔ Completed! *(currently in beta release)*
