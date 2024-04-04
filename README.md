@@ -5,8 +5,8 @@ This project will evolve slowly, expect updates!
 
 ## Known Issues in latest Pre-release/Beta version
 * Kinito not talking, at all.
-* Directly accessing websites *(Surf the web)* menu broken
-* Kinito talks at wrong times *(like when you close the right click menu)*
+* Searching Google not working unless you add + as a space. (fix soon!)
+* ~~Kinito talks at wrong times *(like when you close the right click menu)*~~ (Now intended!)
 
 
 # Planned updates!
