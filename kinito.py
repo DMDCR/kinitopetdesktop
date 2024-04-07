@@ -82,7 +82,7 @@ class DesktopPet(tk.Tk):
         self.play_audio(os.path.join("other", "search_web.wav"))
         query = simpledialog.askstring("Google Search", "Enter your Google search query:")
         if query:
-            webbrowser.open("https://www.google.com/search?q=" + query)
+            webbrowser.open("https://www.google.com/search?q=" + query.replace(" ", "+"))
 
     def search_wikipedia(self):
         self.play_audio(os.path.join("other", "search_web.wav"))
