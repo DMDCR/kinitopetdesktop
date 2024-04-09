@@ -12,3 +12,4 @@ This project will evolve slowly, expect updates!
 * Box showing what Kinito is saying!
 * Being a Desktop Assistant, and not just a pet! *(wip)*
 * ~~Closing using tray (hidden icons tray)~~ ✔ Completed! *(currently in beta release)*
+* Making Kinito Draggable *(he moves around pretty quickly, so I don't know if this is very important for now.)*
