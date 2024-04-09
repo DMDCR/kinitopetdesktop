@@ -5,7 +5,7 @@ This project will evolve slowly, expect updates!
 
 ## Known Issues in the latest Pre-release/Beta version
 * Kinito not talking, at all. *(unsure why.)*
-* ~~Searching Google not working unless you add + as a space.~~ *(fixed in source code, will be in beta soon)*
+* ~~Searching Google not working unless you add + as a space.~~ *(fixed in source code, will be in next beta/release)*
 
 
 # Planned updates!
