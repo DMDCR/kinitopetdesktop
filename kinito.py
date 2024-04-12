@@ -10,6 +10,8 @@ import threading
 import pystray
 from pystray import MenuItem as item
 import webbrowser
+import tempfile
+import io
 
 class IconDialog:
     def __init__(self):
@@ -32,6 +34,60 @@ class IconDialog:
         else:
             messagebox.showwarning("Empty URL", "Please enter a URL.")
 
+class AudioFetcher:
+    def __init__(self, repo_url):
+        self.repo_url = repo_url
+        self.audio_cache = {}  # Dictionary to hold audio content
+
+    def fetch_audio_files(self):
+        try:
+            kinitoread_file = "audio.kinitoread"
+            url = f"{self.repo_url}/{kinitoread_file}"
+
+            response = requests.get(url)
+            response.raise_for_status()
+            audio_files = response.text.split(",")
+            audio_files = [audio.strip() for audio in audio_files]
+
+            for audio_file in audio_files:
+                audio_content = self.fetch_audio_content(audio_file)
+                if audio_content:
+                    self.audio_cache[audio_file] = audio_content
+
+            print("Audio cache:", self.audio_cache)
+
+            return list(self.audio_cache.keys())
+
+        except requests.RequestException as e:
+            print("Error fetching audio files:", e)
+            return []
+
+    def fetch_audio_content(self, audio_file):
+        try:
+            audio_url = f"{self.repo_url}/{audio_file}"
+            response = requests.get(audio_url)
+            response.raise_for_status()
+            return response.content
+        except requests.RequestException as e:
+            print(f"Error fetching audio content for {audio_file}: {e}")
+            return None
+
+    def delete_audio_files(self):
+        self.audio_cache.clear()
+
+class AudioPlayerThread(threading.Thread):
+    def __init__(self, audio_content):
+        super().__init__()
+        self.audio_content = audio_content
+
+    def run(self):
+        pygame.mixer.init()
+        audio_file = io.BytesIO(self.audio_content)
+        pygame.mixer.music.load(audio_file)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+
 class DesktopPet(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -43,19 +99,26 @@ class DesktopPet(tk.Tk):
         self.setup_menu()
         self.setup_pet()
         self.bind("<Button-3>", self.show_menu)
-        self.say_hello()
+        self.setup_audio_fetcher() 
+#        self.say_hello()
+
+    def setup_audio_fetcher(self):
+        self.audio_fetcher = AudioFetcher("https://raw.githubusercontent.com/DMDCR/kinitopetdesktop/main/audio")
 
     def exit_action(self):
+        self.audio_fetcher.delete_audio_files()
         self.destroy()
+
+    def play_audio_from_memory(self, audio_content):
+        player_thread = AudioPlayerThread(audio_content)
+        player_thread.start()
 
     def surf_web(self):
         IconDialog()
 
-    def play_audio(self, audio_path):
-        if os.path.exists(audio_path):
-            pygame.mixer.init()
-            pygame.mixer.music.load(audio_path)
-            pygame.mixer.music.play()
+    def play_audio(self, audio_content, delay=0):
+        if audio_content:
+            self.play_audio_from_memory(audio_content)
 
     def setup_tray_icon(self):
         image = Image.open(os.path.join("other", "icon.png"))
@@ -71,7 +134,6 @@ class DesktopPet(tk.Tk):
     def setup_menu(self):
         self.menu = Menu(self, tearoff=0)
         url_menu = Menu(self.menu, tearoff=0)
-        url_menu.add_command(label="Surf the web! (Open a website)", command=self.surf_web)
         url_menu.add_command(label="Search Google", command=self.search_google)
         url_menu.add_command(label="Search Wikipedia", command=self.search_wikipedia)
         self.menu.add_cascade(label="Search", menu=url_menu)
@@ -79,13 +141,15 @@ class DesktopPet(tk.Tk):
         self.menu.add_command(label="Exit", command=self.exit_action)
 
     def search_google(self):
-        self.play_audio(os.path.join("other", "search_web.wav"))
+        audio_files = self.audio_fetcher.fetch_audio_files()
+        self.after(0, lambda: self.play_audio(self.audio_fetcher.audio_cache.get("web_open.wav"), delay=3000))
         query = simpledialog.askstring("Google Search", "Enter your Google search query:")
         if query:
             webbrowser.open("https://www.google.com/search?q=" + query.replace(" ", "+"))
 
     def search_wikipedia(self):
-        self.play_audio(os.path.join("other", "search_web.wav"))
+        audio_files = self.audio_fetcher.fetch_audio_files()
+        self.after(0, lambda: self.play_audio(self.audio_fetcher.audio_cache.get("web_open.wav"), delay=3000))
         query = simpledialog.askstring("Wikipedia Search", "Enter your Wikipedia search query:")
         if query:
             webbrowser.open("https://en.wikipedia.org/wiki/" + query.replace(" ", "_"))
@@ -159,8 +223,9 @@ class DesktopPet(tk.Tk):
     def glide_to(self, target_x, target_y, current_x, current_y, step_x, step_y):
         if (round(current_x), round(current_y)) == (target_x, target_y):
             self.moving = False
-            audio_path = random.choice(self.fetch_github_audio_files())
-            self.play_audio(audio_path)
+            if self.audio_fetcher.audio_cache:  # Check if audio cache is not empty
+                audio_content = random.choice(list(self.audio_fetcher.audio_cache.values()))
+                self.after(random.randint(3000, 4000), lambda: self.play_audio(audio_content))  
             self.after(random.randint(3000, 4000), self.random_move)
             return
 
@@ -174,31 +239,18 @@ class DesktopPet(tk.Tk):
         self.moving = True
         self.move_pet()
 
-    def say_hello(self):
-        audio_url = "other/hello.mp3"
-        self.play_audio(audio_url)
+# I removed the hello feature because i was too lazy to fix it. it also was kinda annoying :|
 
-    def fetch_github_audio_files(self):
-        repo_url = "https://raw.githubusercontent.com/DMDCR/kinitopetdesktop/main/"
-        audio_directory = "audio/"
-        kinitoread_file = "audio.kinitoread"
-        url = repo_url + audio_directory + kinitoread_file
-
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            audio_files = response.text.split(",")  
-            audio_files = [audio.strip() for audio in audio_files]  
-            audio_files = [os.path.join(audio_directory, audio) for audio in audio_files]  
-            return audio_files
-
-        except requests.RequestException as e:
-            print("Error fetching audio files:", e)
-            return []
-
-        except Exception as e:
-            print("Unexpected error:", e)
-            return []
+#     def say_hello(self):
+#        audio_files = self.audio_fetcher.fetch_audio_files()
+#        if audio_files:
+#            audio_content = self.audio_fetcher.audio_cache.get("audio/hello.mp3")  # Fetching 'hello.mp3'
+#            if audio_content:
+#                self.after(random.randint(3000, 4000), lambda: self.play_audio_from_memory(audio_content))  # Play audio after a random delay
+#            else:
+#                print("Audio file 'hello.mp3' not found in the repository.")
+#        else:
+#            print("No audio files fetched from the repository.")
 
 if __name__ == "__main__":
     app = DesktopPet()
