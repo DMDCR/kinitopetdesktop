@@ -100,7 +100,11 @@ class DesktopPet(tk.Tk):
         self.setup_pet()
         self.bind("<Button-3>", self.show_menu)
         self.setup_audio_fetcher() 
-#        self.say_hello()
+
+        # make him say hi on start!
+        pygame.mixer.init()
+        pygame.mixer.music.load(os.path.join("other", "hello.mp3"))  # Path to hello.mp3 within the "other" directory
+        pygame.mixer.music.play()
 
     def setup_audio_fetcher(self):
         self.audio_fetcher = AudioFetcher("https://raw.githubusercontent.com/DMDCR/kinitopetdesktop/main/audio")
