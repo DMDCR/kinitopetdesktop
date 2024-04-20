@@ -1,17 +1,31 @@
 # DMD's Unofficial KinitoPET Desktop Assistant!
 This project will update periodically, and I plan on keeping it active for a while!
 
-### ONLY WORKS ON WINDOWS 10/11! 
-*(unless you run the source code using older python versions, which I cannot guarantee compatibility!)*
+* Please read the [Issues](#issues) and [Compatibility](#compatibility-list) tables for more info!
 
-## Known Issues in the latest Pre-release/Beta version
-* ~~Kinito not talking, at all. *(unsure why.)*~~ | Should be fixed! ✔️
-
+----------------------
 
 # Planned updates!
 * Box showing what Kinito is saying!
 * Making Kinito Draggable *(I am unsure if this is important, as Kinito does move around quickly enough for it to not be an issue.)*
+
+----------------------------
+# Issues
+## Pre-release/Beta Release (v1.1-b2)
+| Issues | Fixed in source/latest release? |
+| ----------------- | ----------------- |
+| ALL major issues | Yes! |
+
+## Latest Release (v1.1)
+
+| Issues | Fixed in source? |
+| ----------------- | ----------------- |
+| Faulty network connection causing kinito to not talk | No |
+| Major RAM increase from v1.0.1 | No |
+| Lag on start / taking forever to start | No |
+
 -----------------
+
 # Compatibility List!
 | OS | Release Supported? | Version|
 | -------- | ------- | ------ |
