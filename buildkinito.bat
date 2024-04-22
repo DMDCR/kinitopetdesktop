@@ -3,7 +3,7 @@ title KinitoPET Desktop Pet Builder
 echo This project requires Python 3.10+, please make sure you have a 3.10+ version of Python, then continue!
 echo Please continue to build Kinito!
 pause;
-echo Continuing will Download PyInstaller & the requirements for running the project, are you sure?
+echo Continuing will Download PyInstaller and the requirements for running the project, are you sure?
 echo Please exit Command Prompt/Terminal if you do not want to continue, if you still want to continue, press any key.
 pause;
 pip install pyinstaller
