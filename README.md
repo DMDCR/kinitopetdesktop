@@ -6,7 +6,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 ----------------------
 
 # Planned updates!
-* Box showing what Kinito is saying!
+* Dialog Bubble!
 * Making Kinito Draggable *(I am unsure if this is important, as Kinito does move around quickly enough for it to not be an issue.)*
 
 ----------------------------
