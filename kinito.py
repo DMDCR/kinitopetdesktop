@@ -229,8 +229,8 @@ class DesktopPet(tk.Tk):
             self.moving = False
             if self.audio_fetcher.audio_cache:  # Check if audio cache is not empty
                 audio_content = random.choice(list(self.audio_fetcher.audio_cache.values()))
-                self.after(random.randint(3000, 4000), lambda: self.play_audio(audio_content))  
-            self.after(random.randint(3000, 4000), self.random_move)
+                self.after(random.randint(6000, 8000), lambda: self.play_audio(audio_content))  
+            self.after(random.randint(6000, 8000), self.random_move)
             return
 
         current_x += step_x
