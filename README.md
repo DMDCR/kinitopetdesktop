@@ -9,6 +9,11 @@ This project will update periodically, and I plan on keeping it active for a whi
 * Dialog Bubble!
 * Making Kinito Draggable *(I am unsure if this is important, as Kinito does move around quickly enough for it to not be an issue.)*
 
+
+
+
+
+
 ----------------------------
 # Issues
 ## Pre-release/Beta Release (v1.1-b2)
@@ -39,3 +44,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 **Could work with some workarounds*
 ####
 ***May work in an emulator, like wine.*
+
+---------------
+#### Hey, this project is not perfect!
+If you would like to add a feature, request one, or fix a bug, just create an issue or pull request!
