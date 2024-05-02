@@ -23,6 +23,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 | Faulty network connection causing kinito to not talk | No |
 | Major RAM increase from v1.0.1 | No |
 | Lag on start / taking forever to start | No |
+| Not talking on start (not greeting the user) | Yes |
 
 -----------------
 
