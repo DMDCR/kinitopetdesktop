@@ -1,7 +1,28 @@
-              
-- name: Automatic Releases
+---
+name: "pre-release"
 
+on:
+  push:
+    branches:
+      - "master"
 
-              
-  uses: marvinpinto/action-automatic-releases@v1.2.1
+jobs:
+  pre-release:
+    name: "Pre Release"
+    runs-on: "ubuntu-latest"
 
+    steps:
+      # ...
+      - name: "Build & test"
+        run: |
+          echo "done!"
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "KinitoPET Desktop Assistant Prerelease Version"
+          files: |
+            LICENSE.txt
+            *.jar
