@@ -1,28 +1,18 @@
----
-name: "pre-release"
-
-on:
-  push:
-    branches:
-      - "master"
-
-jobs:
-  pre-release:
-    name: "Pre Release"
-    runs-on: "ubuntu-latest"
-
-    steps:
-      # ...
-      - name: "Build & test"
-        run: |
-          echo "done!"
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "KinitoPET Desktop Assistant Prerelease Version"
-          files: |
-            LICENSE.txt
-            *.jar
+            - name: Automatic Releases
+  # You may pin to the exact commit or the version.
+  # uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0
+  uses: marvinpinto/action-automatic-releases@v1.2.1
+  with:
+    # GitHub secret token
+    repo_token: "${{ secrets.GITHUB_TOKEN }}"
+    # Git tag (for automatic releases)
+    automatic_release_tag: "autosourcebuild"
+    # Should this release be marked as a draft?
+    draft: false
+    # Should this release be marked as a pre-release?
+    prerelease: true
+    # Release title (for automatic releases)
+    title: "Pre-Release Version (from source)"
+    # Assets to upload to the release
+    files: # optional
+          
