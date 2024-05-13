@@ -140,6 +140,7 @@ class DesktopPet(tk.Tk):
         url_menu = Menu(self.menu, tearoff=0)
         url_menu.add_command(label="Search Google", command=self.search_google)
         url_menu.add_command(label="Search Wikipedia", command=self.search_wikipedia)
+        url_menu.add_command(label="Search YouTube", command=self.search_yt)
         self.menu.add_cascade(label="Search", menu=url_menu)
         self.menu.add_separator()
         self.menu.add_command(label="Exit", command=self.exit_action)
@@ -157,6 +158,13 @@ class DesktopPet(tk.Tk):
         query = simpledialog.askstring("Wikipedia Search", "Enter your Wikipedia search query:")
         if query:
             webbrowser.open("https://en.wikipedia.org/wiki/" + query.replace(" ", "_"))
+
+    def search_yt(self):
+        audio_files = self.audio_fetcher.fetch_audio_files()
+        self.after(0, lambda: self.play_audio(self.audio_fetcher.audio_cache.get("web_open.wav"), delay=3000))
+        query = simpledialog.askstring("Youtube Search", "What are you looking for?:")
+        if query:
+            webbrowser.open("https://www.youtube.com/results?search_query=" + query.replace(" ", "+"))
 
     def setup_pet(self):
         self.pet_images = {}
