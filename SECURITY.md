@@ -2,13 +2,13 @@
 
 ## Supported Versions
 
-These are the currently supported versions of the project. I reccommend using the newer versions as older versions have little, to no support.
+These are the currently supported versions of the project. I reccommend using the newer versions as older versions have no support.
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.1.x   | :white_check_mark: |
 | 1.0.x   | :x:                |
-| < 1.0   | :x:                |
+| 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 
