@@ -21,7 +21,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 | ----------------- | ----------------- |
 | ALL major issues | Yes! |
 
-## Latest Release (v1.1)
+## Latest Release (v1.1.1)
 
 | Issues | Fixed in source? |
 | ----------------- | ----------------- |
