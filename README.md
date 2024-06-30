@@ -21,21 +21,19 @@ This project will update periodically, and I plan on keeping it active for a whi
 | ----------------- | ----------------- |
 | ALL major issues | Yes! |
 
-## Latest Release (v1.1.1)
+## Latest Release (v1.1.2)
 
 | Issues | Fixed in source? |
 | ----------------- | ----------------- |
 | Faulty network connection causing kinito to not talk | No |
 | Major RAM increase from v1.0.1 | No |
-| Lag on start / taking forever to start | No |
-| Not talking on start (not greeting the user) | Yes |
 
 -----------------
 
 # Compatibility List!
 | OS | Release Supported? | Version|
 | -------- | ------- | ------ |
-| Windows 11/10 (64 bit)  | Yes!    |  Latest (v1.1)     |
+| Windows 11/10 (64 bit)  | Yes!    |  Latest (v1.1.2)     |
 | Windows 10 (32 bit) |   No :(   |    Source Code Only    |
 | Windows 7 (32/64 bit)    | No :(    |     Source Code Only   |
 | Windows XP and below | No* | None* |
