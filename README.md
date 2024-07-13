@@ -1,4 +1,4 @@
-# DMD's Unofficial KinitoPET Desktop Assistant!
+# DMD's Unofficial KinitoPET Desktop Assistant! ("KinitoPET Desktop")
 This project will update periodically, and I plan on keeping it active for a while!
 
 * Please read the [Issues](#issues) and [Compatibility](#compatibility-list) tables for more info!
@@ -21,7 +21,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 | ----------------- | ----------------- |
 | ALL major issues | Yes! |
 
-## Latest Release (v1.1.2)
+## Latest Release (v1.1.3)
 
 | Issues | Fixed in source? |
 | ----------------- | ----------------- |
@@ -33,7 +33,7 @@ This project will update periodically, and I plan on keeping it active for a whi
 # Compatibility List!
 | OS | Release Supported? | Version|
 | -------- | ------- | ------ |
-| Windows 11/10 (64 bit)  | Yes!    |  Latest (v1.1.2)     |
+| Windows 11/10 (64 bit)  | Yes!    |  Latest (v1.1.3)     |
 | Windows 10 (32 bit) |   No :(   |    Source Code Only    |
 | Windows 7 (32/64 bit)    | No :(    |     Source Code Only   |
 | Windows XP and below | No* | None* |
