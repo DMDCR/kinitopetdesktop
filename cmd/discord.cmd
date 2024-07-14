@@ -1,2 +1,2 @@
-echo script made by bloatware, if you didn't check the contributions already :D
+echo batch scripts made by bloatware - contact me on discord at @bwindows10
 start C:\Users\%USERNAME%\AppData\Local\Discord\Update.exe
