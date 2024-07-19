@@ -17,5 +17,6 @@ echo Please check the "dist" folder, if the exe is there, continue
 pause;
 xcopy /s /e /v /i "./models" "./dist/models"
 xcopy /s /e /v /i "./other" "./dist/other"
+xcopy /s /e /v /i "./cmd" "./dist/cmd"
 echo Done!
 pause;
