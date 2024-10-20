@@ -1,4 +1,4 @@
-# DMD's Unofficial KinitoPET Desktop Assistant! ("KinitoPET Desktop")
+# DMD's Unofficial KinitoPET Desktop Assistant
 This project will update periodically, and I plan on keeping it active for a while!
 
 * Please read the [Issues](#issues) and [Compatibility](#compatibility-list) tables for more info!
@@ -6,9 +6,8 @@ This project will update periodically, and I plan on keeping it active for a whi
 ----------------------
 
 # Planned updates!
-* Dialog Bubble!
-* Making Kinito Draggable *(I am unsure if this is important, as Kinito does move around quickly enough for it to not be an issue.)*
-
+* Dialog Bubble when Kinito talks! (v1.2)
+* Windows XP Compatibility (v1.1.3-xp)
 
 
 
@@ -16,33 +15,33 @@ This project will update periodically, and I plan on keeping it active for a whi
 
 ----------------------------
 # Issues
-## Pre-release/Beta Release (v1.1-b2)
+### Pre-release/Beta Release ( - )
 | Issues | Fixed in source/latest release? |
 | ----------------- | ----------------- |
-| ALL major issues | Yes! |
+| No beta version right now | - |
 
-## Latest Release (v1.1.3)
+### Latest Release (v1.1.3)
 
 | Issues | Fixed in source? |
 | ----------------- | ----------------- |
-| Faulty network connection causing kinito to not talk | No |
-| Major RAM increase from v1.0.1 | No |
+| High RAM Usage | ❌ |
+| Program freezes when a prompt is started | ❌ |
 
 -----------------
 
 # Compatibility List!
-| OS | Release Supported? | Version|
+| OS | Version | Tested?|
 | -------- | ------- | ------ |
-| Windows 11/10 (64 bit)  | Yes!    |  Latest (v1.1.3)     |
-| Windows 10 (32 bit) |   No :(   |    Source Code Only    |
-| Windows 7 (32/64 bit)    | No :(    |     Source Code Only   |
-| Windows XP and below | No* | None* |
-| Linux | No** | None** |
+| Windows 11/10 (64 bit)  | Latest (v1.1.3)    |    ✅   |
+| Windows 10/8/7 (32 bit) | Source Code (v1.1.3)  |    -   |
+| Windows 8/7 (64 bit)    | Latest (v1.1.3)   |     -   |
+| Windows XP (64/32 bit) | None | * |
+| Windows 2000 and older | None | ✅ |
 
-**Could work with some workarounds*
+**a version is in the works*
 ####
-***May work in an emulator, like wine.*
+#### Feel free to test the untested versions yourself :D
 
 ---------------
-#### Hey, this project is not perfect!
-If you would like to add a feature, request one, or fix a bug, just create an issue or pull request!
+### This project is not perfect!
+*If you would like to add a feature, request one, or fix a bug, just create an issue or pull request!*
